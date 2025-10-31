@@ -100,8 +100,12 @@ app.post('/login', async (req, res, next) => {
 });
 
 app.get('/todos', auth, async (req, res, next) => {
-
-})
+  const { page, limit } = req.query;
+  // TODO: Work on how to filter todos based on user
+  console.log(page, limit, limit + page);
+  console.log(todos.slice(page, limit + page));
+  return res.status(200).json({ data: todos.slice(page, limit + page) });
+});
 
 app.post('/todos', auth, async (req, res, next) => {
   if (!req.body) {
@@ -120,6 +124,7 @@ app.post('/todos', auth, async (req, res, next) => {
 
   const todo = {
     id: crypto.randomUUID(),
+    userId: req.user.id,
     title,
     description,
     createdAt: new Date(),
@@ -128,7 +133,7 @@ app.post('/todos', auth, async (req, res, next) => {
 
   todos.push(todo);
 
-  return res.status(201).json({ message: 'Todo created.' });
+  return res.status(201).json({ message: 'Todo created.', data: todo });
 });
 
 app.use((req, res, next) => {
