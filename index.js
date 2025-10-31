@@ -121,13 +121,13 @@ function auth(req, res, next) {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return res.status(400).json({ message: 'Authorization bearer token required.' });
+    return res.status(401).json({ message: 'Authorization bearer token required.' });
   }
 
   const token = authorization.split(' ')[1];
 
   if (!token) {
-    return res.status(400).json({ message: 'Authorization bearer token required.' });
+    return res.status(401).json({ message: 'Authorization bearer token required.' });
   }
 
   try {
