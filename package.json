@@ -1,0 +1,28 @@
+{
+  "name": "todo-list-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lrbn86/todo-list-api.git"
+  },
+  "author": "lrbn86",
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/lrbn86/todo-list-api/issues"
+  },
+  "homepage": "https://github.com/lrbn86/todo-list-api#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1"
+  }
+}
