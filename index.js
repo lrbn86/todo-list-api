@@ -45,7 +45,15 @@ app.post('/register', async (req, res, next) => {
   emails.add(email);
 
   const hash = bcrypt.hashSync(password, 10);
-  const user = { id: crypto.randomUUID(), name, email, hash };
+  const user = {
+    id: crypto.randomUUID(),
+    name,
+    email,
+    hash,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
   users.push(user);
 
   return res.status(201).json({ message: 'Account has been created.' });
@@ -80,11 +88,20 @@ app.post('/login', async (req, res, next) => {
     return res.status(400).json({ message: 'Invalid credentials.' });
   }
 
-  const payload = { id: user.id, name: user.name, email: user.email };
+  const payload = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+  };
+
   const token = jwt.sign(payload, secretKey, { expiresIn: '1m' });
 
   return res.status(200).json({ token });
 });
+
+app.get('/todos', auth, async (req, res, next) => {
+
+})
 
 app.post('/todos', auth, async (req, res, next) => {
   if (!req.body) {
@@ -100,6 +117,16 @@ app.post('/todos', auth, async (req, res, next) => {
   if (!description) {
     return res.status(400).json({ message: 'Description is required.' });
   }
+
+  const todo = {
+    id: crypto.randomUUID(),
+    title,
+    description,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  todos.push(todo);
 
   return res.status(201).json({ message: 'Todo created.' });
 });
@@ -131,9 +158,10 @@ function auth(req, res, next) {
   }
 
   try {
-    jwt.verify(token, secretKey);
+    const decoded = jwt.verify(token, secretKey);
+    req.user = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({ message: 'Invalid token. Login again to get new token.' });
+    return res.status(401).json({ message: 'Invalid token. Login to get a new token.' });
   }
 }
